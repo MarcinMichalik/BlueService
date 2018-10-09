@@ -36,7 +36,7 @@ public class InvestmentCalculatorImpl implements InvestmentCalculator {
             }
             BigDecimal percent = percentCalculator.calculatePercent(fund.getType(), funds);
             // Wyliczyć kwotę dla wybranego funduszu - wyrzuć sobie do innej części - zakładamy zmianę logiki wyliczania
-            return new InvestmentCalculatorResult(fund, new BigDecimal(0), new BigDecimal(0));
+            return new InvestmentCalculatorResult(fund, new BigDecimal(0), percent);
         }).collect(Collectors.toList());
         // TODO - walidacja przekazanych funduszy może również odbywać się tutaj poprzez sumowanie wszystkich procentów i sprawdzenie czy równają się 100%
 
