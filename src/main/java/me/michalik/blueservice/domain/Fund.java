@@ -1,6 +1,6 @@
 package me.michalik.blueservice.domain;
 
-public class Fund {
+public class Fund{
 
     private Long id;
     private String name;

@@ -4,6 +4,6 @@ public enum FundType {
 
     POLISH, // Polski
     FOREIGN, // Zagraniczny
-    FINACIAL // Pieniężny
+    FINANCIAL // Pieniężny
 
 }

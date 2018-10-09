@@ -2,7 +2,7 @@ package me.michalik.blueservice.domain;
 
 import java.math.BigDecimal;
 
-public class InvestmentCalculatorResult {
+public class InvestmentCalculatorResult{
 
     private Fund fund;
     private BigDecimal amount;
