@@ -8,7 +8,10 @@ import me.michalik.blueservice.domain.InvestmentStyle;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,5 +41,36 @@ public class InvestmentCalculatorImplTest {
         List<InvestmentCalculatorResult> result = investmentCalculator.calculateStageOne(new BigDecimal(10000), InvestmentStyle.SAFE, funds);
 
         assertEquals(funds.size(), result.size());
+
+        List<InvestmentCalculatorResult> polishResults = result.stream()
+                .filter(investmentCalculatorResult -> investmentCalculatorResult.getFund().getType().equals(FundType.POLISH))
+                .collect(Collectors.toList());
+
+        assertEquals(2, polishResults.size());
+        assertEquals(0, BigDecimal.valueOf(1000).compareTo(polishResults.get(0).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(10).compareTo(polishResults.get(0).getPercent()));
+        assertEquals(0, BigDecimal.valueOf(1000).compareTo(polishResults.get(1).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(10).compareTo(polishResults.get(1).getPercent()));
+
+        List<InvestmentCalculatorResult> foreignResults = result.stream()
+                .filter(investmentCalculatorResult -> investmentCalculatorResult.getFund().getType().equals(FundType.FOREIGN))
+                .collect(Collectors.toList());
+
+        assertEquals(3, foreignResults.size());
+        assertEquals(0, BigDecimal.valueOf(2500).compareTo(foreignResults.get(0).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(25).compareTo(foreignResults.get(0).getPercent()));
+        assertEquals(0, BigDecimal.valueOf(2500).compareTo(foreignResults.get(1).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(25).compareTo(foreignResults.get(1).getPercent()));
+        assertEquals(0, BigDecimal.valueOf(2500).compareTo(foreignResults.get(2).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(25).compareTo(foreignResults.get(2).getPercent()));
+
+        List<InvestmentCalculatorResult> financialResults = result.stream()
+                .filter(investmentCalculatorResult -> investmentCalculatorResult.getFund().getType().equals(FundType.FINANCIAL))
+                .collect(Collectors.toList());
+
+        assertEquals(1, financialResults.size());
+        assertEquals(0, BigDecimal.valueOf(500).compareTo(financialResults.get(0).getAmount()));
+        assertEquals(0, BigDecimal.valueOf(5).compareTo(financialResults.get(0).getPercent()));
+
     }
 }
