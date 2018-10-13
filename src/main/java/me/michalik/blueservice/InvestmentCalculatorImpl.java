@@ -4,6 +4,7 @@ import me.michalik.blueservice.domain.Fund;
 import me.michalik.blueservice.domain.FundType;
 import me.michalik.blueservice.domain.InvestmentCalculatorResult;
 import me.michalik.blueservice.domain.InvestmentStyle;
+import me.michalik.blueservice.exceptions.MissingFundTypeException;
 import me.michalik.blueservice.service.DivisionCalculatorImpl;
 import me.michalik.blueservice.service.DivisionCalculator;
 import me.michalik.blueservice.service.PercentCalculator;
@@ -21,7 +22,7 @@ public class InvestmentCalculatorImpl implements InvestmentCalculator {
     public List<InvestmentCalculatorResult> calculateStageOne(BigDecimal amountOfInvestment, InvestmentStyle investmentStyle, Set<Fund> funds) {
 
         if(funds.stream().map(Fund::getType).distinct().count()<3){
-            throw new RuntimeException(""); // TODO - wymyśleć message i może stworzyć swój wyjątek
+            throw new MissingFundTypeException("Not found all fund types");
         }
 
         PercentCalculator percentCalculator = new PercentCalculatorImpl();
@@ -45,11 +46,6 @@ public class InvestmentCalculatorImpl implements InvestmentCalculator {
     }
 
     private List<InvestmentCalculatorResult> mapToInvestmentCalculatorResult(List<Fund> funds, List<BigDecimal> percents, BigDecimal amountOfInvestment){
-
-        if(funds.size()!=percents.size()){
-            throw new RuntimeException(""); // TODO - wymyśleć message i może stworzyć swój wyjątek
-        }
-
         DivisionCalculator divisionCalculator = new DivisionCalculatorImpl();
 
         return funds.stream().map(fund -> {

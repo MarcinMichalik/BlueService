@@ -5,6 +5,7 @@ import me.michalik.blueservice.domain.Fund;
 import me.michalik.blueservice.domain.FundType;
 import me.michalik.blueservice.domain.InvestmentCalculatorResult;
 import me.michalik.blueservice.domain.InvestmentStyle;
+import me.michalik.blueservice.exceptions.MissingFundTypeException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -79,7 +80,7 @@ public class InvestmentCalculatorImplTest {
 
     @Test
     public void validationTest(){
-        expectedEx.expect(RuntimeException.class);
+        expectedEx.expect(MissingFundTypeException.class);
         InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
         Set<Fund> funds = new HashSet<>();
         investmentCalculator.calculateStageOne(new BigDecimal(10), InvestmentStyle.BALANCED, funds);
