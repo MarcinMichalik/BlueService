@@ -1,5 +1,7 @@
 package me.michalik.blueservice.domain;
 
+import java.util.Objects;
+
 public class Fund{
 
     private Long id;
@@ -34,5 +36,20 @@ public class Fund{
 
     public void setType(FundType type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fund fund = (Fund) o;
+        return Objects.equals(id, fund.id) &&
+                Objects.equals(name, fund.name) &&
+                type == fund.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, type);
     }
 }

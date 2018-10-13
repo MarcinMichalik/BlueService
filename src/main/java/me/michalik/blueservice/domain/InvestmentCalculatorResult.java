@@ -1,6 +1,7 @@
 package me.michalik.blueservice.domain;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class InvestmentCalculatorResult{
 
@@ -36,5 +37,20 @@ public class InvestmentCalculatorResult{
 
     public void setPercent(BigDecimal percent) {
         this.percent = percent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InvestmentCalculatorResult result = (InvestmentCalculatorResult) o;
+        return Objects.equals(fund, result.fund) &&
+                Objects.equals(amount.stripTrailingZeros(), result.amount.stripTrailingZeros()) &&
+                Objects.equals(percent.stripTrailingZeros(), result.percent.stripTrailingZeros());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fund, amount.stripTrailingZeros(), percent.stripTrailingZeros());
     }
 }

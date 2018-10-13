@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 
-public class DefaultDivisionCalculatorTest {
+public class DivisionCalculatorImplTest {
 
     @Test
     public void integerCalcTest(){
-        DivisionCalculator divisionCalculator = new DefaultDivisionCalculator();
+        DivisionCalculator divisionCalculator = new DivisionCalculatorImpl();
         BigDecimal result = divisionCalculator.calc(BigDecimal.valueOf(10000), BigDecimal.valueOf(10));
 
         assertEquals(BigDecimal.valueOf(1000).stripTrailingZeros(), result.stripTrailingZeros());
@@ -19,7 +19,7 @@ public class DefaultDivisionCalculatorTest {
 
     @Test
     public void floatingCalcTest(){
-        DivisionCalculator divisionCalculator = new DefaultDivisionCalculator();
+        DivisionCalculator divisionCalculator = new DivisionCalculatorImpl();
         BigDecimal result = divisionCalculator.calc(BigDecimal.valueOf(5), BigDecimal.valueOf(50));
 
         assertEquals(BigDecimal.valueOf(2.5).stripTrailingZeros(), result.stripTrailingZeros());

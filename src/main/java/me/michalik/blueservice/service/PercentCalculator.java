@@ -1,13 +1,13 @@
 package me.michalik.blueservice.service;
 
-import me.michalik.blueservice.domain.Fund;
-import me.michalik.blueservice.domain.FundType;
-
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 
 public interface PercentCalculator {
 
-    BigDecimal calculatePercent(FundType fundType, Collection<Fund> funds);
+    default List<BigDecimal> dividePercent(Integer percent, Integer numberOfFunds){
+        return this.dividePercent(BigDecimal.valueOf(percent), BigDecimal.valueOf(numberOfFunds));
+    }
 
+    List<BigDecimal> dividePercent(BigDecimal percent, BigDecimal numberOfFunds);
 }
