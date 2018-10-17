@@ -2,11 +2,11 @@ package me.michalik.blueservice;
 
 import me.michalik.blueservice.domain.Fund;
 import me.michalik.blueservice.domain.FundType;
-import me.michalik.blueservice.domain.InvestmentCalculatorResult;
+import me.michalik.blueservice.domain.InvestmentResult;
 import me.michalik.blueservice.domain.InvestmentStyle;
 import me.michalik.blueservice.exceptions.MissingFundTypeException;
-import me.michalik.blueservice.service.DivisionCalculatorImpl;
 import me.michalik.blueservice.service.DivisionCalculator;
+import me.michalik.blueservice.service.DivisionCalculatorImpl;
 import me.michalik.blueservice.service.PercentCalculator;
 import me.michalik.blueservice.service.PercentCalculatorImpl;
 
@@ -18,19 +18,30 @@ import java.util.stream.Collectors;
 
 public class InvestmentCalculatorImpl implements InvestmentCalculator {
 
+    private PercentCalculator percentCalculator;
+    private DivisionCalculator divisionCalculator;
+
+    public InvestmentCalculatorImpl() {
+        this.percentCalculator = new PercentCalculatorImpl();
+        this.divisionCalculator = new DivisionCalculatorImpl();
+    }
+
+    public InvestmentCalculatorImpl(PercentCalculator percentCalculator, DivisionCalculator divisionCalculator) {
+        this.percentCalculator = percentCalculator;
+        this.divisionCalculator = divisionCalculator;
+    }
+
     @Override
-    public List<InvestmentCalculatorResult> calculateStageOne(BigDecimal amountOfInvestment, InvestmentStyle investmentStyle, Set<Fund> funds) {
+    public List<InvestmentResult> calculate(BigDecimal amountOfInvestment, InvestmentStyle investmentStyle, Set<Fund> funds) {
 
         if(funds.stream().map(Fund::getType).distinct().count()<3){
             throw new MissingFundTypeException("Not found all fund types");
         }
 
-        PercentCalculator percentCalculator = new PercentCalculatorImpl();
-
         // POLISH
         List<Fund> polishFunds = getFundByType(funds, FundType.POLISH);
         List<BigDecimal> polishPercent = percentCalculator.dividePercent(investmentStyle.getPolishPercent(), polishFunds.size());
-        List<InvestmentCalculatorResult> investmentCalculatorResults = mapToInvestmentCalculatorResult(polishFunds, polishPercent, amountOfInvestment);
+        List<InvestmentResult> investmentCalculatorResults = mapToInvestmentCalculatorResult(polishFunds, polishPercent, amountOfInvestment);
 
         // FOREIGN
         List<Fund> foreignFunds = getFundByType(funds, FundType.FOREIGN);
@@ -45,12 +56,10 @@ public class InvestmentCalculatorImpl implements InvestmentCalculator {
         return investmentCalculatorResults;
     }
 
-    private List<InvestmentCalculatorResult> mapToInvestmentCalculatorResult(List<Fund> funds, List<BigDecimal> percents, BigDecimal amountOfInvestment){
-        DivisionCalculator divisionCalculator = new DivisionCalculatorImpl();
-
+    private List<InvestmentResult> mapToInvestmentCalculatorResult(List<Fund> funds, List<BigDecimal> percents, BigDecimal amountOfInvestment){
         return funds.stream().map(fund -> {
             BigDecimal percent = percents.remove(0);
-            return new InvestmentCalculatorResult(fund, divisionCalculator.calc(amountOfInvestment, percent), percent);
+            return new InvestmentResult(fund, divisionCalculator.calc(amountOfInvestment, percent), percent);
         }).collect(Collectors.toList());
     }
 

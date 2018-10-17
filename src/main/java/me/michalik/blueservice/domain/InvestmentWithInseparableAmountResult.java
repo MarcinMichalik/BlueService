@@ -4,26 +4,30 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvestmentStage2CalculatorResult {
+public class InvestmentWithInseparableAmountResult {
 
-    private List<InvestmentCalculatorResult> results;
+    private List<InvestmentResult> results;
     private BigDecimal inseparableAmount;
 
-    public InvestmentStage2CalculatorResult() {
+    public InvestmentWithInseparableAmountResult() {
         this.results = new ArrayList<>();
         this.inseparableAmount = BigDecimal.valueOf(0);
     }
 
-    public InvestmentStage2CalculatorResult(List<InvestmentCalculatorResult> results, BigDecimal inseparableAmount) {
+    public InvestmentWithInseparableAmountResult(List<InvestmentResult> results, BigDecimal inseparableAmount) {
         this.results = results;
         this.inseparableAmount = inseparableAmount;
     }
 
-    public List<InvestmentCalculatorResult> getResults() {
+    public void addInseparableAmount(BigDecimal value){
+        this.inseparableAmount = inseparableAmount.add(value);
+    }
+
+    public List<InvestmentResult> getResults() {
         return results;
     }
 
-    public void setResults(List<InvestmentCalculatorResult> results) {
+    public void setResults(List<InvestmentResult> results) {
         this.results = results;
     }
 

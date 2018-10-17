@@ -3,7 +3,7 @@ package me.michalik.blueservice;
 
 import me.michalik.blueservice.domain.Fund;
 import me.michalik.blueservice.domain.FundType;
-import me.michalik.blueservice.domain.InvestmentCalculatorResult;
+import me.michalik.blueservice.domain.InvestmentResult;
 import me.michalik.blueservice.domain.InvestmentStyle;
 import me.michalik.blueservice.exceptions.MissingFundTypeException;
 import org.junit.Rule;
@@ -55,9 +55,9 @@ public class InvestmentCalculatorImplTest {
 
     @Test
     public void mapToInvestmentCalculatorResultTest() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        List<InvestmentCalculatorResult> expected = new ArrayList<>();
-        expected.add(new InvestmentCalculatorResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
-        expected.add(new InvestmentCalculatorResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
+        List<InvestmentResult> expected = new ArrayList<>();
+        expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
+        expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
 
 
         List<Fund> funds = new ArrayList<>();
@@ -73,7 +73,7 @@ public class InvestmentCalculatorImplTest {
         Class targetClass = Class.forName("me.michalik.blueservice.InvestmentCalculatorImpl");
         Method method = targetClass.getDeclaredMethod("mapToInvestmentCalculatorResult", methodClasses);
         method.setAccessible(true);
-        List<InvestmentCalculatorResult> result = (List<InvestmentCalculatorResult>) method.invoke(targetClass.newInstance(), methodObjects);
+        List<InvestmentResult> result = (List<InvestmentResult>) method.invoke(targetClass.newInstance(), methodObjects);
 
         assertThat(result, containsInAnyOrder(expected.toArray()));
     }
@@ -83,18 +83,18 @@ public class InvestmentCalculatorImplTest {
         expectedEx.expect(MissingFundTypeException.class);
         InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
         Set<Fund> funds = new HashSet<>();
-        investmentCalculator.calculateStageOne(new BigDecimal(10), InvestmentStyle.BALANCED, funds);
+        investmentCalculator.calculate(new BigDecimal(10), InvestmentStyle.BALANCED, funds);
     }
 
     @Test
     public void calculateStageOneTest(){
-        List<InvestmentCalculatorResult> expected = new ArrayList<>();
-        expected.add(new InvestmentCalculatorResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
-        expected.add(new InvestmentCalculatorResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
-        expected.add(new InvestmentCalculatorResult(new Fund(3L, "Fundusz Zagraniczny 1", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
-        expected.add(new InvestmentCalculatorResult(new Fund(4L, "Fundusz Zagraniczny 2", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
-        expected.add(new InvestmentCalculatorResult(new Fund(5L, "Fundusz Zagraniczny 3", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
-        expected.add(new InvestmentCalculatorResult(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL), BigDecimal.valueOf(500), BigDecimal.valueOf(5)));
+        List<InvestmentResult> expected = new ArrayList<>();
+        expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
+        expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
+        expected.add(new InvestmentResult(new Fund(3L, "Fundusz Zagraniczny 1", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
+        expected.add(new InvestmentResult(new Fund(4L, "Fundusz Zagraniczny 2", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
+        expected.add(new InvestmentResult(new Fund(5L, "Fundusz Zagraniczny 3", FundType.FOREIGN), BigDecimal.valueOf(2500), BigDecimal.valueOf(25)));
+        expected.add(new InvestmentResult(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL), BigDecimal.valueOf(500), BigDecimal.valueOf(5)));
 
 
         Set<Fund> funds = new HashSet<>();
@@ -106,10 +106,10 @@ public class InvestmentCalculatorImplTest {
         funds.add(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL));
 
         InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
-        List<InvestmentCalculatorResult> result = investmentCalculator.calculateStageOne(new BigDecimal(10000), InvestmentStyle.SAFE, funds);
+        List<InvestmentResult> result = investmentCalculator.calculate(new BigDecimal(10000), InvestmentStyle.SAFE, funds);
 
-        BigDecimal sumAmount = result.stream().map(InvestmentCalculatorResult::getAmount).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
-        BigDecimal sumPercent = result.stream().map(InvestmentCalculatorResult::getPercent).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
+        BigDecimal sumAmount = result.stream().map(InvestmentResult::getAmount).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
+        BigDecimal sumPercent = result.stream().map(InvestmentResult::getPercent).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
 
         assertAll(
                 () -> assertEquals(funds.size(), result.size()),
@@ -122,13 +122,13 @@ public class InvestmentCalculatorImplTest {
 
     @Test
     public void calculateStageOneVersionTwoTest(){
-        List<InvestmentCalculatorResult> expected = new ArrayList<>();
-        expected.add(new InvestmentCalculatorResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(668), BigDecimal.valueOf(6.68)));
-        expected.add(new InvestmentCalculatorResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
-        expected.add(new InvestmentCalculatorResult(new Fund(3L, "Fundusz Polski 3", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
-        expected.add(new InvestmentCalculatorResult(new Fund(4L, "Fundusz Zagraniczny 1", FundType.FOREIGN), BigDecimal.valueOf(3750), BigDecimal.valueOf(37.5)));
-        expected.add(new InvestmentCalculatorResult(new Fund(5L, "Fundusz Zagraniczny 2", FundType.FOREIGN), BigDecimal.valueOf(3750), BigDecimal.valueOf(37.5)));
-        expected.add(new InvestmentCalculatorResult(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL), BigDecimal.valueOf(500), BigDecimal.valueOf(5)));
+        List<InvestmentResult> expected = new ArrayList<>();
+        expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(668), BigDecimal.valueOf(6.68)));
+        expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
+        expected.add(new InvestmentResult(new Fund(3L, "Fundusz Polski 3", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
+        expected.add(new InvestmentResult(new Fund(4L, "Fundusz Zagraniczny 1", FundType.FOREIGN), BigDecimal.valueOf(3750), BigDecimal.valueOf(37.5)));
+        expected.add(new InvestmentResult(new Fund(5L, "Fundusz Zagraniczny 2", FundType.FOREIGN), BigDecimal.valueOf(3750), BigDecimal.valueOf(37.5)));
+        expected.add(new InvestmentResult(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL), BigDecimal.valueOf(500), BigDecimal.valueOf(5)));
 
 
 
@@ -141,10 +141,10 @@ public class InvestmentCalculatorImplTest {
         funds.add(new Fund(6L, "Fundusz Pieniężny 1", FundType.FINANCIAL));
 
         InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
-        List<InvestmentCalculatorResult> result = investmentCalculator.calculateStageOne(new BigDecimal(10000), InvestmentStyle.SAFE, funds);
+        List<InvestmentResult> result = investmentCalculator.calculate(new BigDecimal(10000), InvestmentStyle.SAFE, funds);
 
-        BigDecimal sumAmount = result.stream().map(InvestmentCalculatorResult::getAmount).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
-        BigDecimal sumPercent = result.stream().map(InvestmentCalculatorResult::getPercent).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
+        BigDecimal sumAmount = result.stream().map(InvestmentResult::getAmount).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
+        BigDecimal sumPercent = result.stream().map(InvestmentResult::getPercent).reduce(BigDecimal::add).orElse(BigDecimal.valueOf(0));
 
         assertAll(
                 () -> assertEquals(funds.size(), result.size()),

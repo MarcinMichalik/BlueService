@@ -3,13 +3,13 @@ package me.michalik.blueservice.domain;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class InvestmentCalculatorResult{
+public class InvestmentResult {
 
     private Fund fund;
     private BigDecimal amount;
     private BigDecimal percent;
 
-    public InvestmentCalculatorResult(Fund fund, BigDecimal amount, BigDecimal percent) {
+    public InvestmentResult(Fund fund, BigDecimal amount, BigDecimal percent) {
         this.fund = fund;
         this.amount = amount;
         this.percent = percent;
@@ -43,7 +43,7 @@ public class InvestmentCalculatorResult{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InvestmentCalculatorResult result = (InvestmentCalculatorResult) o;
+        InvestmentResult result = (InvestmentResult) o;
         return Objects.equals(fund, result.fund) &&
                 Objects.equals(amount.stripTrailingZeros(), result.amount.stripTrailingZeros()) &&
                 Objects.equals(percent.stripTrailingZeros(), result.percent.stripTrailingZeros());
