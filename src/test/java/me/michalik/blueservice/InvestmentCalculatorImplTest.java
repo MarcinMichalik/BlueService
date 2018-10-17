@@ -5,6 +5,7 @@ import me.michalik.blueservice.domain.Fund;
 import me.michalik.blueservice.domain.FundType;
 import me.michalik.blueservice.domain.InvestmentResult;
 import me.michalik.blueservice.domain.InvestmentStyle;
+import me.michalik.blueservice.exceptions.InsufficientAmountOfInvestmentException;
 import me.michalik.blueservice.exceptions.MissingFundTypeException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,7 +55,7 @@ public class InvestmentCalculatorImplTest {
     }
 
     @Test
-    public void mapToInvestmentCalculatorResultTest() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public void mapToInvestmentCalculatorResult() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         List<InvestmentResult> expected = new ArrayList<>();
         expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
         expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
@@ -79,7 +80,7 @@ public class InvestmentCalculatorImplTest {
     }
 
     @Test
-    public void validationTest(){
+    public void validationFunds(){
         expectedEx.expect(MissingFundTypeException.class);
         InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
         Set<Fund> funds = new HashSet<>();
@@ -87,7 +88,15 @@ public class InvestmentCalculatorImplTest {
     }
 
     @Test
-    public void calculateStageOneTest(){
+    public void validationAmount(){
+        expectedEx.expect(InsufficientAmountOfInvestmentException.class);
+        InvestmentCalculator investmentCalculator = new InvestmentCalculatorImpl();
+        Set<Fund> funds = new HashSet<>();
+        investmentCalculator.calculate(new BigDecimal(0), InvestmentStyle.BALANCED, funds);
+    }
+
+    @Test
+    public void invest10000StyleSafe2Polish3Foreign1Financial(){
         List<InvestmentResult> expected = new ArrayList<>();
         expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
         expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(1000), BigDecimal.valueOf(10)));
@@ -121,7 +130,7 @@ public class InvestmentCalculatorImplTest {
     }
 
     @Test
-    public void invest10000StyleSafe(){
+    public void invest10000StyleSafe3Polish2Foreign1Financial(){
         List<InvestmentResult> expected = new ArrayList<>();
         expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(668), BigDecimal.valueOf(6.68)));
         expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
