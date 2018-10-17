@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 public class PercentCalculatorImplTest {
 
     @Test
-    public void simpleDividePercentTest(){
+    public void percent20DivisionBy2(){
         PercentCalculator percentCalculator = new PercentCalculatorImpl();
         List<BigDecimal> expected = new ArrayList<>();
         expected.add(BigDecimal.valueOf(10));
@@ -26,7 +26,7 @@ public class PercentCalculatorImplTest {
     }
 
     @Test
-    public void advanceDividePercentTest(){
+    public void percent20DivisionBy3(){
         PercentCalculator percentCalculator = new PercentCalculatorImpl();
         List<BigDecimal> expected = new ArrayList<>();
         expected.add(BigDecimal.valueOf(6.68));

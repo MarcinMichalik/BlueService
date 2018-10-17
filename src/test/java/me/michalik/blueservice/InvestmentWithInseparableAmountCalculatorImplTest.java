@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class InvestmentWithInseparableAmountCalculatorImplTest {
 
     @Test
-    public void calculate_1005_2inseparableAmount(){
+    public void amountOfInvestment1005(){
         Set<Fund> funds = new HashSet<>();
         funds.add(new Fund(1L, "Fundusz Polski 1", FundType.POLISH));
         funds.add(new Fund(2L, "Fundusz Polski 2", FundType.POLISH));
@@ -31,7 +31,7 @@ public class InvestmentWithInseparableAmountCalculatorImplTest {
     }
 
     @Test
-    public void calculate_1001_1inseparableAmount(){
+    public void amountOfInvestment1001(){
         Set<Fund> funds = new HashSet<>();
         funds.add(new Fund(1L, "Fundusz Polski 1", FundType.POLISH));
         funds.add(new Fund(2L, "Fundusz Polski 2", FundType.POLISH));
@@ -47,7 +47,7 @@ public class InvestmentWithInseparableAmountCalculatorImplTest {
     }
 
     @Test
-    public void calculate_1000_0inseparableAmount(){
+    public void amountOfInvestment1000(){
         Set<Fund> funds = new HashSet<>();
         funds.add(new Fund(1L, "Fundusz Polski 1", FundType.POLISH));
         funds.add(new Fund(2L, "Fundusz Polski 2", FundType.POLISH));

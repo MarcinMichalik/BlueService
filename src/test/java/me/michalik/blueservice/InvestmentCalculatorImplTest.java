@@ -26,7 +26,7 @@ public class InvestmentCalculatorImplTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Test
-    public void getFundByType() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public void filterFundByType() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         List<Fund> expected = new ArrayList<>();
         expected.add(new Fund(1L, "Fundusz Polski 1", FundType.POLISH));
         expected.add(new Fund(2L, "Fundusz Polski 2", FundType.POLISH));
@@ -121,7 +121,7 @@ public class InvestmentCalculatorImplTest {
     }
 
     @Test
-    public void calculateStageOneVersionTwoTest(){
+    public void invest10000StyleSafe(){
         List<InvestmentResult> expected = new ArrayList<>();
         expected.add(new InvestmentResult(new Fund(1L, "Fundusz Polski 1", FundType.POLISH), BigDecimal.valueOf(668), BigDecimal.valueOf(6.68)));
         expected.add(new InvestmentResult(new Fund(2L, "Fundusz Polski 2", FundType.POLISH), BigDecimal.valueOf(666), BigDecimal.valueOf(6.66)));
