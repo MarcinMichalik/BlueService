@@ -6,7 +6,7 @@ Rozwiązanie problemu z etapu 1 znajduję się w klasie o nazwie: ```InvestmentC
 
 #### Etap 2
 W klasie ```InvestmentWithInseparableAmountCalculatorImpl``` jest implementacja podziału z kwotą nierozdzielną 
-opisanego etapie 2.
+opisanego w etapie 2.
 
 ### Wymagania
 Do poprawnego działania aplikacji wymagana jest Java w minimum wersji 8 (Java 8+).
