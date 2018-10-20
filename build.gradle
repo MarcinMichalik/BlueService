@@ -43,3 +43,6 @@ cobertura {
     coverageIgnoreTrivial = true
     coverageExcludes = ['.*me.michalik.blueservice.domain.*', '.*me.michalik.blueservice.exceptions.*']
 }
+
+test.finalizedBy jacocoTestReport
+jacocoTestReport.dependsOn test
